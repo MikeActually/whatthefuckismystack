@@ -22,10 +22,11 @@ class StackNameGenerator extends React.Component {
       url: this.URL + letter,
       responseType: "text"
     }).then(async response => {
-      let results = response.data.split("\n");
-      let filteredResults = results.filter(word => word != null && word !== "");
-      const randomIndex = Math.floor(Math.random() * filteredResults.length);
-      return filteredResults[randomIndex];
+      const results = response.data.split("\n");
+      const filteredResults = results.filter(word => word != null && word !== "");
+      const deDupeResults = filteredResults.filter(word => !this.state.generatedList.includes(word));
+      const useResults = deDupeResults.length > 0 ? deDupeResults : filteredResults;
+      return useResults[Math.floor(Math.random() * useResults.length)];
     });
   }
 
